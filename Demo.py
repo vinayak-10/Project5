@@ -18,7 +18,6 @@ class Subject(object):
 class Teacher(object):
     nos = 0
 
-
     def __init__(self, *sb, **de):
         self.det = {'Name': '', 'ID': '', 'in_time': '', 'out_time': ''}
         self.det = {k: v for k, v in de.items() if k in self.det.keys()}
@@ -29,14 +28,16 @@ class Teacher(object):
                       'th': [None, None, None, None, None, None, None],
                       'f': [None, None, None, None, None, None, None],
                       'sa': [None, None, None, None, None, None, None]}
-
         Teacher.nos += 1
         self._length = 3
+        self.cursub = []
 
+
+    def __eq__(self, o) -> bool:
+        return self.det['ID'] == o.det['ID']
 
     def __len__(self):
         return self._length
-
 
     def __getitem__(self, k):
         if k < 0:
@@ -82,42 +83,25 @@ class Teacher(object):
 
     def __contains__(self, item):
         return item in self.subs or self.slots or self.det
-    
 
 
 class Course(object):
-
     class Sem(object):
 
         def __init__(self, sem, sub=None):
             if sub is None:
                 sub = []
-            self.sub_list = sub
+            self._subs = sub
             self.sem = sem
-            self.st_no = 0
-
+            self.t_no = []
 
     def __init__(self, name, semno):
         self.cour = {'Name': name, 'semno': semno}
-        self.__subs = []
+        self._sem = [self.Sem(1)]
 
-    def _sub(self, subs):
-        self.__subs.append(subs)
-
-    def _delsub(self):
-        code = input("Code of Subject to be deleted")
-        for i in range(len(self.__subs)):
-            if self.__subs[i].code == code:
-                del self.__subs[i]
-
-
-    def _suba(self):
-        return self.__subs
-
-    sub = property(fget=_suba, fset=_sub, fdel=_delsub)
-
-
-
+    def _adsem(self, x: Sem, ts, semno):
+        self._sem.append(x)
+        self._sem[semno-1].t_no.append(ts)
 
 
 
