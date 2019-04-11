@@ -1,0 +1,27 @@
+Sem Class
+        def __setitem__(self, k,  tn):
+            self.__subs.append(subs)
+            if tn is not None:
+                self.t_no.append(tn)
+
+        def __delitem__(self, code, k=None):
+            # code = input("Code of Subject to be deleted")
+            for i in range(len(self.__subs)):
+                if self.__subs[i].code == code:
+                    del self.__subs[i]
+            for i in self.t_no:
+                if self.t_no[i] == k:
+                    del self.t_no
+
+
+        def __getitem__(self, code, k=None):
+            for x in range(len(self.__subs)):
+                if self.__subs[x].code == code:
+                    return self.__subs[x]
+            for i in self.t_no:
+                if self.t_no[i] == k:
+                    return self.t_no
+
+
+
+
