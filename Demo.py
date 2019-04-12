@@ -1,18 +1,17 @@
 import builtins
 
-per = (10, 11, 12, 1, 1.5, 2.5, 3.5, 4.5)
-ext = 9,
-
 
 class Subject(object):
 
-    def __init__(self, code, title, lecs, labs, imp, course):
+    def __init__(self, code=None, title=None, lecs=None, lab=False, imp=False):
         self.code = code
         self.title = title
         self.lecs = lecs
-        self.labs = labs
+        self.labs = lab
         self.imp = imp
-        self.course = course
+
+    def __eq__(self, other):
+        return self.code == other.code
 
 
 class Teacher(object):
@@ -86,22 +85,43 @@ class Teacher(object):
 
 
 class Course(object):
+
     class Sem(object):
 
-        def __init__(self, sem, sub=None):
-            if sub is None:
-                sub = []
-            self._subs = sub
+        def __init__(self, sem):
+            self._subs = [Subject()]
             self.sem = sem
             self.t_no = []
+
+        def _adsub(self, sub: Subject, sno=5):
+            self._subs[0] = sub
+            for x in range(1, sno):
+                self._subs.append(Subject(lecs=4))
+
+
+        def __setitem__(self, sno, sub):
+            if sno == 0:
+                self._subs.append(sub)
+            elif sno == 1:
+                self.t_no.append(sub)
+
+        def __delitem__(self, k):
+            code = input("Code of item to be deleted")
+            if k == 0:
+                for i in range(len(self._subs)):
+                    if self._subs[i].code == code:
+                        del self._subs[i]
+                        return
+            elif k == 1:
+                for i in range(len(self.t_no)):
+                    if self.t_no[i] == code:
+                        del self.t_no[i]
+                        return
 
     def __init__(self, name, semno):
         self.cour = {'Name': name, 'semno': semno}
         self._sem = [self.Sem(1)]
 
-    def _adsem(self, x: Sem, ts, semno):
-        self._sem.append(x)
-        self._sem[semno-1].t_no.append(ts)
-
-
-
+    def _adsem(self, semno):
+        for x in range(1, semno):
+            self._sem.append(self.Sem(sem=(x+1)))

@@ -14,13 +14,15 @@ Sem Class
                     del self.t_no
 
 
-        def __getitem__(self, code, k=None):
-            for x in range(len(self.__subs)):
-                if self.__subs[x].code == code:
-                    return self.__subs[x]
-            for i in self.t_no:
-                if self.t_no[i] == k:
-                    return self.t_no
+        def __getitem__(self, code):
+            if code == 0:
+                for x in range(len(self._subs)):
+                    if self._subs[x].code == code:
+                        return self._subs[x]
+            elif code == 1:
+                for i in self.t_no:
+                    if i == code:
+                        return self.t_no
 
 
 

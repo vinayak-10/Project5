@@ -11,7 +11,8 @@ class check(object):
                 """merge classes"""
                 while tec.cursub.count(i) > 1:
                     tec.cursub.remove(i)
-            assert isinstance(Demo.Course, cou)
+            # assert isinstance(Demo.Course, cou)
             assert isinstance(Demo.Course.Sem, cou._sem[0])
-            cou._sem[0].t_no
+
+            # cou._sem[0].t_no
 
