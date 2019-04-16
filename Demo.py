@@ -31,7 +31,6 @@ class Teacher(object):
         self._length = 3
         self.cursub = []
 
-
     def __eq__(self, o) -> bool:
         return self.det['ID'] == o.det['ID']
 
@@ -85,7 +84,6 @@ class Teacher(object):
 
 
 class Course(object):
-
     class Sem(object):
 
         def __init__(self, sem):
@@ -97,7 +95,6 @@ class Course(object):
             self._subs[0] = sub
             for x in range(1, sno):
                 self._subs.append(Subject(lecs=4))
-
 
         def __setitem__(self, sno, sub):
             if sno == 0:
@@ -120,8 +117,14 @@ class Course(object):
 
     def __init__(self, name, semno):
         self.cour = {'Name': name, 'semno': semno}
-        self._sem = [self.Sem(1)]
+        self._sem = []
+        for x in range(semno):
+            self._adsem(semno=x + 1)
 
     def _adsem(self, semno):
-        for x in range(1, semno):
-            self._sem.append(self.Sem(sem=(x+1)))
+        self._sem.append(self.Sem(sem=semno))
+
+    def _delsem(self, semno):
+        for x in range(len(self._sem)):
+            if self._sem[x].sem == semno:
+                self._sem.pop(x)
