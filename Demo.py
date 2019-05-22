@@ -1,9 +1,12 @@
-import builtins
+import builtins as bi
+
+per = (10, 11, 12, 1, 1.5, 2.5, 3.5, 4.5)  # Time Periods for classes
+ext = 9  # Extra time period when needed
 
 
 class Subject(object):
 
-    def __init__(self, code=None, title=None, lecs=None, lab=False, imp=False):
+    def __init__(self, code=None, title=None, lecs=None, lab=False, imp=0):
         self.code = code
         self.title = title
         self.lecs = lecs
@@ -29,7 +32,7 @@ class Teacher(object):
                       'sa': [None, None, None, None, None, None, None]}
         Teacher.nos += 1
         self._length = 3
-        self.cursub = []
+        self.cursub = []    # Changes every sem; Limit input by user for constraint
 
     def __eq__(self, o) -> bool:
         return self.det['ID'] == o.det['ID']
@@ -41,11 +44,8 @@ class Teacher(object):
         if k < 0:
             k += len(self)  # attempt to convert negative index
 
-        if not 0 <= k < len(self) or not 0 <= k < len(self.subs):
+        if not 0 <= k < len(self) or not 0 <= k < len(self.subs) or k not in self.det.keys() or k not in self.slots.keys():
             raise IndexError("index out of range")
-
-        if k not in self.det.keys() or self.slots.keys():
-            raise KeyError("Key not in available keys")
 
         t = type(k)
         if t == str:
@@ -56,7 +56,11 @@ class Teacher(object):
                 return self.slots[k]
 
         elif t == int:
-            return self.subs[k]
+            x = len(self.subs)
+            if 0 <= k < x:
+                return self.subs[k]
+            elif x <= k < len(self.cursub):
+                return self.cursub[k-x]
 
     def __setitem__(self, k, val):
         if k < 0:
@@ -87,9 +91,11 @@ class Course(object):
     class Sem(object):
 
         def __init__(self, sem):
-            self._subs = [Subject()]
+            self._subs = []
             self.sem = sem
+            self.yr = sem//2 if sem % 2 != 0 else (sem//2)-1
             self.t_no = []
+            self.tt = {x: per for x in ['M', 'T', 'W', 'Th', 'F', 'S']}  # dict for representing timetable
 
         def _adsub(self, sub: Subject, sno=5):
             self._subs[0] = sub
@@ -115,9 +121,20 @@ class Course(object):
                         del self.t_no[i]
                         return
 
-    def __init__(self, name, semno):
+        def __getitem__(self, sno):
+            try:
+                if 0 <= sno <= 5:
+                    return self._subs[sno]
+                elif 6 <= sno <= 11:
+                    return self.t_no[sno - 6]
+            except IndexError:
+                print(IndexError, end=' ')
+                pass
+
+    def __init__(self, name, semno, lvl):
         self.cour = {'Name': name, 'semno': semno}
         self._sem = []
+        self.lvl = lvl
         for x in range(semno):
             self._adsem(semno=x + 1)
 

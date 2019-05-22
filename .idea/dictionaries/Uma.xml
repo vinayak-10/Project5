@@ -3,15 +3,32 @@
     <words>
       <w>adsem</w>
       <w>adsub</w>
+      <w>algo</w>
+      <w>avgtat</w>
+      <w>avgwt</w>
+      <w>borderwidth</w>
       <w>classnum</w>
+      <w>clearall</w>
       <w>cmwc</w>
       <w>cursub</w>
       <w>delsem</w>
       <w>delsub</w>
       <w>delsubs</w>
+      <w>fcfs</w>
+      <w>hprn</w>
+      <w>ktype</w>
       <w>lecs</w>
+      <w>leftl</w>
+      <w>prio</w>
+      <w>rightl</w>
+      <w>roun</w>
+      <w>rowa</w>
+      <w>rowb</w>
+      <w>runpython</w>
       <w>semno</w>
+      <w>steelblue</w>
       <w>suba</w>
+      <w>teac</w>
     </words>
   </dictionary>
 </component>

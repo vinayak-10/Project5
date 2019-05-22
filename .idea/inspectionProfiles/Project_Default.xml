@@ -5,6 +5,8 @@
       <option name="ignoredErrors">
         <list>
           <option value="E303" />
+          <option value="E731" />
+          <option value="E722" />
         </list>
       </option>
     </inspection_tool>
@@ -13,9 +15,26 @@
         <list>
           <option value="N801" />
           <option value="N814" />
+          <option value="N803" />
+          <option value="N806" />
+          <option value="N802" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyShadowingBuiltinsInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredNames">
+        <list>
+          <option value="round" />
         </list>
       </option>
     </inspection_tool>
     <inspection_tool class="PyUnreachableCodeInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="Pmw.ScrolledText" />
+        </list>
+      </option>
+    </inspection_tool>
   </profile>
 </component>
