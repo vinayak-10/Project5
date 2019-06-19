@@ -1,0 +1,92 @@
+Index: UI.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- UI.py	(date 1558182523024)
++++ UI.py	(date 1558182523024)
+@@ -1,51 +1,38 @@
+ from tkinter import *
+-
+-
+-def frame(root, side):
+-    w = Frame(root)
+-    w.pack(side=side, expand=YES, fill=BOTH)
+-    return w
+-
+-
+-def button(root, side, text, command=None):
+-    w = Button(root, text=text, command=command)
+-    w.pack(side=side, expand=YES, fill=BOTH)
+-    return w
+-
+-
+-class Calculator(Frame):
++from tkinter import ttk
+ 
+-    def __init__(self):
+-        Frame.__init__(self)
+-        self.pack(expand=YES, fill=BOTH)
+-        self.master.title("Simple Calculator")
+-        self.master.iconname("Calc")
+ 
+-        display = StringVar()
+-        Entry(self.master, relief=SUNKEN, textvariable=display).pack(side=TOP, Expand=YES, fill=BOTH)
+-
+-        for k in ("123", "456", "789", "-0."):
+-            key_f = Frame(self, TOP)
+-            for ch in k:
+-                button(key_f, LEFT, ch, lambda w=display, s='%s' % ch: w.set(w.get() + s))
+-
+-        ops_f = Frame(self, TOP)
+-        for c in "+-*/=":
+-            if c == "=":
+-                btn = button(ops_f, LEFT, c)
+-                btn.bind('<ButtonRelease-1>', lambda e, s=self, w=display: s.calc(w), '+')
+-            else:
+-                btn = button(ops_f, LEFT, c, lambda w=display, che=c: w.set(w.get() + ' ' + che + ' '))
+-
+-        clear_f = Frame(self, BOTTOM)
+-        button(clear_f, LEFT, "Clr", lambda w=display: w.set(''))
+-
+-    def calc(self, display):
+-        try:
+-            display.set("eval(display.get()")
+-        except ValueError:
+-            display.set("ERROR")
++def calculate(*args):
++    try:
++        value = float(feet.get())
++        meters.set((0.3048 * value * 10000.0 + 0.5) / 10000.0)
++    except ValueError:
++        pass
++
++
++root = Tk()
++root.title("Feet to Meters")
++mainframe = ttk.Frame(root, padding="3 3 12 12")
++mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
++mainframe.columnconfigure(0, weight=1)
++mainframe.rowconfigure(0, weight=1)
++
++feet = StringVar()
++meters = StringVar()
++
++feet_entry = ttk.Entry(mainframe, width=7, textvariable=feet)
++feet_entry.grid(column=2, row=1, sticky=(W, E))
+ 
++ttk.Label(mainframe, textvariable=meters).grid(column=2, row=2, sticky=(W, E))
++ttk.Button(mainframe, text="Calculate", command=calculate).grid(column=3, row=3, sticky=W)
+ 
+-if __name__ == '__main__':
+-    Calculator().mainloop()
++ttk.Label(mainframe, text="feet").grid(column=3, row=1, sticky=W)
++ttk.Label(mainframe, text="is equivalent to").grid(column=1, row=2, sticky=E)
++ttk.Label(mainframe, text="meters").grid(column=3, row=2, sticky=W)
++
++for child in mainframe.winfo_children():
++    child.grid_configure(padx=5, pady=5)
++
++feet_entry.focus()
++root.bind('<Return>', calculate)
++root.mainloop()

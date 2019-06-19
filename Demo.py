@@ -1,12 +1,10 @@
-import builtins as bi
-
 per = (10, 11, 12, 1, 1.5, 2.5, 3.5, 4.5)  # Time Periods for classes
 ext = 9  # Extra time period when needed
 
 
 class Subject(object):
 
-    def __init__(self, code=None, title=None, lecs=None, lab=False, imp=0):
+    def __init__(self, code=None, title=None, lecs=None, lab=0, imp=0):
         self.code = code
         self.title = title
         self.lecs = lecs
@@ -21,15 +19,10 @@ class Teacher(object):
     nos = 0
 
     def __init__(self, *sb, **de):
-        self.det = {'Name': '', 'ID': '', 'in_time': '', 'out_time': ''}
+        self.det = {'Name': '', 'ID': ''}
         self.det = {k: v for k, v in de.items() if k in self.det.keys()}
         self.subs = [k for k in sb]
-        self.slots = {'m': [None, None, None, None, None, None, None],
-                      't': [None, None, None, None, None, None, None],
-                      'w': [None, None, None, None, None, None, None],
-                      'th': [None, None, None, None, None, None, None],
-                      'f': [None, None, None, None, None, None, None],
-                      'sa': [None, None, None, None, None, None, None]}
+        self.slots = {x: [None]*7 for x in ['M', 'T', 'W', 'Th', 'F', 'S']}
         Teacher.nos += 1
         self._length = 3
         self.cursub = []    # Changes every sem; Limit input by user for constraint
@@ -91,29 +84,30 @@ class Course(object):
     class Sem(object):
 
         def __init__(self, sem):
-            self._subs = []
+            nos = int(input('No. of subjects for Sem %d' % self.sem))
+            self.subs = [Subject()]*nos
             self.sem = sem
             self.yr = sem//2 if sem % 2 != 0 else (sem//2)-1
             self.t_no = []
-            self.tt = {x: per for x in ['M', 'T', 'W', 'Th', 'F', 'S']}  # dict for representing timetable
+            self.tt = {x: [None]*7 for x in ['M', 'T', 'W', 'Th', 'F', 'S']}  # dict for representing timetable
 
         def _adsub(self, sub: Subject, sno=5):
-            self._subs[0] = sub
+            self.subs[0] = sub
             for x in range(1, sno):
-                self._subs.append(Subject(lecs=4))
+                self.subs.append(Subject(lecs=4))
 
         def __setitem__(self, sno, sub):
             if sno == 0:
-                self._subs.append(sub)
+                self.subs.append(sub)
             elif sno == 1:
                 self.t_no.append(sub)
 
         def __delitem__(self, k):
             code = input("Code of item to be deleted")
             if k == 0:
-                for i in range(len(self._subs)):
-                    if self._subs[i].code == code:
-                        del self._subs[i]
+                for i in range(len(self.subs)):
+                    if self.subs[i].code == code:
+                        del self.subs[i]
                         return
             elif k == 1:
                 for i in range(len(self.t_no)):
@@ -124,7 +118,7 @@ class Course(object):
         def __getitem__(self, sno):
             try:
                 if 0 <= sno <= 5:
-                    return self._subs[sno]
+                    return self.subs[sno]
                 elif 6 <= sno <= 11:
                     return self.t_no[sno - 6]
             except IndexError:
@@ -133,15 +127,15 @@ class Course(object):
 
     def __init__(self, name, semno, lvl):
         self.cour = {'Name': name, 'semno': semno}
-        self._sem = []
+        self.sem = []
         self.lvl = lvl
         for x in range(semno):
             self._adsem(semno=x + 1)
 
     def _adsem(self, semno):
-        self._sem.append(self.Sem(sem=semno))
+        self.sem.append(self.Sem(sem=semno))
 
     def _delsem(self, semno):
-        for x in range(len(self._sem)):
-            if self._sem[x].sem == semno:
-                self._sem.pop(x)
+        for x in range(len(self.sem)):
+            if self.sem[x].sem == semno:
+                self.sem.pop(x)
